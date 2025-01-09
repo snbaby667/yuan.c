@@ -1,17 +1,20 @@
-﻿#include <pbc.h>
+#include <pbc.h>
 #include <pbc_time.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(void) {
     pairing_t pairing;
-    element_t P, PK, Yi, diP, hiPK, YihiPK, Vi, Ti, ki1Vi, ki1ViYi, hi1PK, T1, T1li1, tauiP, T2, ki2Vi, ki2ViYi, hi2PK, T3, T3li2, ci, sumP, A1;  // G群
+    element_t P, PK, Yi, diP, hiPK, YihiPK, Vi, Ti, ki1Vi, ki1ViYi, hi1PK, T1, T1li1, tauiP, T2, ki2Vi, ki2ViYi, hi2PK, T3, T1li2, ci, sumP, A1;  // G群
     element_t x, yi, hi, hix, di, vi, ti, ki, li, kivi, kividi, kividili, taui, hi1, ki1, li1, hi2, ki2, li2, tauI, sum;  // 整数集
     double time1, time2, time3, time4, time5, time6, chu, chu2, chu4, chu6, chu8, chu10, chu12;
     double Time1 = 0, Time2 = 0, Time3 = 0, Time4 = 0, Time5 = 0, Time6 = 0, Time7 = 0;
 
-    // 自动输入类型A配对的参数
-    a_param_input(pairing);
+    // 自动输入类型A配对的参数，添加错误处理
+    if (a_param_input(pairing)!= 0) {
+        perror("参数输入失败");
+        return 1;
+    }
 
     // 初始化各元素
     element_init_Zr(x, pairing);
@@ -64,7 +67,7 @@ int main(void) {
     for (int i = 0; i < 100; i++) {
         // 检查配对是否对称，若不对称则输出错误信息并退出程序
         if (!pairing_is_symmetric(pairing)) {
-            perror("该配对需为对称配对");
+            fprintf(stderr, "该配对需为对称配对，但实际不对称，程序退出\n");
             exit(1);
         }
         time5 = get_time();
